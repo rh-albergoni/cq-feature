@@ -9,16 +9,14 @@ comando e stubs) via `config/cqfeature.php`, no padrão dos demais pacotes `Cq*`
 
 ## Documentação
 
-**[Abrir documentação completa no navegador →](https://cqplace.github.io/CqFeature/)**
-
-Site estático (GitHub Pages) com API, exemplos, configuração e integração Laravel.
-Fonte: [`docs/index.html`](docs/index.html).
+Documentação completa (API, exemplos, configuração e integração Laravel) em
+[`docs/index.html`](docs/index.html) — abra o arquivo diretamente no navegador.
 
 ---
 
 ## Instalação
 
-Como o pacote é distribuído por VCS privado (`CqPlace/CqFeature`), adicione o
+Como o pacote é distribuído por VCS (`rh-albergoni/cq-feature`), adicione o
 repositório ao `composer.json` do projeto consumidor:
 
 ```json
@@ -26,7 +24,7 @@ repositório ao `composer.json` do projeto consumidor:
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/CqPlace/CqFeature.git"
+            "url": "https://github.com/rh-albergoni/cq-feature.git"
         }
     ]
 }

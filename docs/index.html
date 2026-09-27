@@ -526,7 +526,7 @@
             <li>Mudar a arquitetura DDD ou criar novos <em>tipos</em> de feature</li>
             <li>Rodar migrations ou tocar o banco de dados</li>
             <li>Exigir Orchestra Testbench (testes em PHPUnit puro)</li>
-            <li>Publicar no Packagist público (distribuição por VCS privado)</li>
+            <li>Publicar no Packagist público (distribuição por VCS)</li>
             <li>Presets/perfis nomeados de config (apenas um arquivo de config)</li>
           </ul>
         </div>
@@ -536,12 +536,12 @@
     <!-- INSTALAÇÃO -->
     <section id="instalacao">
       <h2>Instalação</h2>
-      <p>O pacote é distribuído por <strong>VCS privado</strong> (<code>CqPlace/CqFeature</code>). Adicione o repositório ao <code>composer.json</code> do projeto consumidor:</p>
+      <p>O pacote é distribuído por <strong>VCS</strong> (<code>rh-albergoni/cq-feature</code>). Adicione o repositório ao <code>composer.json</code> do projeto consumidor:</p>
 <pre><code><span class="kw">{</span>
     <span class="str">"repositories"</span>: [
         {
             <span class="str">"type"</span>: <span class="str">"vcs"</span>,
-            <span class="str">"url"</span>: <span class="str">"https://github.com/CqPlace/CqFeature.git"</span>
+            <span class="str">"url"</span>: <span class="str">"https://github.com/rh-albergoni/cq-feature.git"</span>
         }
     ]
 <span class="kw">}</span></code></pre>
@@ -562,11 +562,6 @@
           <tr><td>illuminate/console ^10|^11|^12</td><td>Sim</td><td>Comando Artisan</td></tr>
         </tbody>
       </table>
-
-      <div class="callout callout-warn">
-        <div class="callout-title">Habilitar o GitHub Pages</div>
-        Para que este tutorial fique acessível online, habilite o GitHub Pages do repositório em <code>Settings → Pages → Build and deployment → Source: GitHub Actions</code>. O workflow <code>.github/workflows/pages.yml</code> publica o conteúdo de <code>docs/</code> a cada push em <code>main</code>.
-      </div>
     </section>
 
     <!-- INÍCIO RÁPIDO -->
