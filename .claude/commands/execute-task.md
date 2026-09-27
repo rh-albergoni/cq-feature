@@ -1,0 +1,1 @@
+../../.cursor/commands/execute-task.md

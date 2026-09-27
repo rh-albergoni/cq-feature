@@ -1,0 +1,54 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Dao\Queries;
+
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\FilterDtos\{{Domain}}{{Action}}FilterDto;
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Dao\Queries\{{Domain}}QueryDao;
+use {{RootNamespace}}\Shared\Dtos\OrderByDto;
+use {{RootNamespace}}\Shared\Dtos\PagerDto;
+use {{RootNamespace}}\Shared\FilterDtos\BaseListFilterDto;
+use {{RootNamespace}}\Shared\Repositories\FilterEloquentTrait;
+
+class {{Domain}}{{Action}}QueryDao extends {{Domain}}QueryDao
+{
+    use FilterEloquentTrait;
+
+    /**
+     * Listar registros
+     *
+     * @param  {{Domain}}{{Action}}FilterDto  $filter
+     */
+    public function execute(BaseListFilterDto|{{Domain}}{{Action}}FilterDto $filter): PagerDto
+    {
+        $this->ensureCallerIsAuthorized();
+
+        $builder = $this->q()
+            ->select([
+                '{{table_name}}.*',
+                'created_by_users.name as created_by_user_name',
+                'updated_by_users.name as updated_by_user_name',
+            ])
+            ->leftJoin('users as created_by_users', 'created_by_users.id', '{{table_name}}.created_by_user_id')
+            ->leftJoin('users as updated_by_users', 'updated_by_users.id', '{{table_name}}.updated_by_user_id')
+            ->when(empty($filter->order_by), function () use ($filter) {
+                $filter->order_by = [OrderByDto::from(['column' => '{{table_name}}.id'])];
+            });
+
+        $pagerDto = $this->applyFilter($builder, $filter);
+        $pagerDto->items = array_map(fn ($item) => $this->modelToListDto($item), $pagerDto->items);
+
+        return $pagerDto;
+    }
+
+    /**
+     * @return array<class-string>
+     */
+    protected function authorizedCallers(): array
+    {
+        return [
+            '{{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Services\{{Domain}}{{Action}}Service',
+        ];
+    }
+}

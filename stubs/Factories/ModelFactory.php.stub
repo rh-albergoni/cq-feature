@@ -1,0 +1,20 @@
+<?php
+
+namespace Database\Factories\Modules\{{Module}}\{{Domain}}\Shared\Models;
+
+use {{RootNamespace}}\Models\User;
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Models\{{Domain}};
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class {{Domain}}Factory extends Factory
+{
+    protected $model = {{Domain}}::class;
+
+    public function definition(): array
+    {
+        return [
+            'created_by_user_id' => User::factory()->create()->id,
+            'updated_by_user_id' => User::factory()->create()->id,
+        ];
+    }
+}

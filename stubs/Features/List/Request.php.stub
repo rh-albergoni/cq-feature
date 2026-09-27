@@ -1,0 +1,30 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Requests;
+
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\FilterDtos\{{Domain}}{{Action}}FilterDto;
+use Illuminate\Foundation\Http\FormRequest;
+
+class {{Domain}}{{Action}}Request extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            '*' => 'nullable',
+        ];
+    }
+
+    public function validatedDto(): {{Domain}}{{Action}}FilterDto
+    {
+        $validated = parent::validated();
+
+        return {{Domain}}{{Action}}FilterDto::from($validated);
+    }
+}

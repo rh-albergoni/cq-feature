@@ -1,0 +1,25 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Controllers;
+
+use {{RootNamespace}}\Http\Controllers\Controller;
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Services\{{Domain}}{{Action}}Service;
+use {{RootNamespace}}\Shared\Utils\Response\Res;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
+
+class {{Domain}}{{Action}}Controller extends Controller
+{
+    public function __construct(
+        private readonly {{Domain}}{{Action}}Service $service
+    ) {}
+
+    public function execute(int $id): JsonResponse
+    {
+        $this->service->execute($id);
+
+        return Res::success(code: Response::HTTP_NO_CONTENT);
+    }
+}

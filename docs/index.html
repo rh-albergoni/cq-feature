@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CqFeature — gerador de scaffold DDD (Module/Domain/Feature) instalável como pacote Composer para Laravel.">
+  <title>CqFeature — Guia do pacote</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --accent: #0d9488;
+      --accent-hover: #0f766e;
+      --accent-soft: #ccfbf1;
+      --code-bg: #1e293b;
+      --code-text: #e2e8f0;
+      --warn-bg: #fffbeb;
+      --warn-border: #f59e0b;
+      --danger-bg: #fef2f2;
+      --danger-border: #ef4444;
+      --success-bg: #ecfdf5;
+      --success-border: #10b981;
+      --info-bg: #eff6ff;
+      --info-border: #3b82f6;
+      --sidebar-w: 260px;
+      --radius: 10px;
+      --shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 4px 12px rgba(15, 23, 42, 0.04);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 5rem;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    /* Layout */
+    .layout {
+      display: grid;
+      grid-template-columns: var(--sidebar-w) 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 1.5rem 0;
+    }
+
+    .sidebar-brand {
+      padding: 0 1.25rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+
+    .sidebar-brand h1 {
+      margin: 0;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+
+    .sidebar-brand p {
+      margin: 0.25rem 0 0;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .nav-group {
+      margin-bottom: 0.5rem;
+    }
+
+    .nav-group-title {
+      padding: 0.5rem 1.25rem 0.25rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 0.35rem 1.25rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .main {
+      max-width: 52rem;
+      padding: 2.5rem 3rem 4rem;
+    }
+
+    /* Hero */
+    .hero {
+      margin-bottom: 3rem;
+      padding: 2.5rem;
+      background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+      border-radius: var(--radius);
+      color: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .hero h2 {
+      margin: 0 0 0.75rem;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: 1.1rem;
+      opacity: 0.92;
+      max-width: 36rem;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.25rem;
+    }
+
+    .tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.65rem;
+      background: rgba(255,255,255,0.2);
+      border-radius: 999px;
+    }
+
+    /* Typography */
+    section { margin-bottom: 3rem; }
+
+    h2 {
+      font-size: 1.65rem;
+      font-weight: 700;
+      margin: 0 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--accent-soft);
+      letter-spacing: -0.02em;
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 1.75rem 0 0.75rem;
+      color: var(--text);
+    }
+
+    h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 1.25rem 0 0.5rem;
+    }
+
+    p { margin: 0 0 1rem; }
+
+    ul, ol {
+      margin: 0 0 1rem;
+      padding-left: 1.35rem;
+    }
+
+    li { margin-bottom: 0.35rem; }
+
+    a { color: var(--accent); }
+    a:hover { color: var(--accent-hover); }
+
+    strong { font-weight: 600; }
+
+    /* Cards */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1.25rem 0;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+    }
+
+    .card h4 {
+      margin: 0 0 0.5rem;
+      font-size: 0.95rem;
+      color: var(--accent);
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Callouts */
+    .callout {
+      border-radius: var(--radius);
+      padding: 1rem 1.15rem;
+      margin: 1.25rem 0;
+      border-left: 4px solid;
+      font-size: 0.95rem;
+    }
+
+    .callout-title {
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+      font-size: 0.9rem;
+    }
+
+    .callout-warn { background: var(--warn-bg); border-color: var(--warn-border); }
+    .callout-danger { background: var(--danger-bg); border-color: var(--danger-border); }
+    .callout-success { background: var(--success-bg); border-color: var(--success-border); }
+    .callout-info { background: var(--info-bg); border-color: var(--info-border); }
+
+    /* Code */
+    pre {
+      margin: 1rem 0;
+      padding: 1.15rem 1.25rem;
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: var(--radius);
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      line-height: 1.55;
+      box-shadow: var(--shadow);
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88em;
+      background: #f1f5f9;
+      color: #0f766e;
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+    }
+
+    pre code {
+      background: none;
+      color: inherit;
+      padding: 0;
+      font-size: inherit;
+    }
+
+    .kw { color: #c084fc; }
+    .fn { color: #67e8f9; }
+    .str { color: #86efac; }
+    .cmt { color: #94a3b8; font-style: italic; }
+    .cls { color: #fcd34d; }
+    .var { color: #f9a8d4; }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+      background: var(--surface);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    th, td {
+      padding: 0.65rem 0.9rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background: #f1f5f9;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    /* Compare columns */
+    .vs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+
+    .vs-box {
+      padding: 1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+
+    .vs-box.yes { border-color: var(--success-border); }
+    .vs-box.no { border-color: var(--danger-border); }
+
+    .vs-box h4 { margin-top: 0; }
+
+    /* API method list */
+    .method {
+      margin: 1.5rem 0;
+      padding: 1rem 1.15rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .method-sig {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 500;
+      word-break: break-all;
+    }
+
+    .method-desc {
+      margin: 0.5rem 0 0;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    /* File tree */
+    .tree {
+      margin: 1rem 0;
+      padding: 1.15rem 1.25rem;
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: var(--radius);
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      box-shadow: var(--shadow);
+      white-space: pre;
+    }
+
+    /* Mobile */
+    .menu-toggle {
+      display: none;
+      position: fixed;
+      bottom: 1.25rem;
+      right: 1.25rem;
+      z-index: 100;
+      width: 3rem;
+      height: 3rem;
+      border: none;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 1.25rem;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(13, 148, 136, 0.4);
+    }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar {
+        position: fixed;
+        left: -100%;
+        z-index: 50;
+        width: var(--sidebar-w);
+        transition: left 0.25s;
+        box-shadow: 4px 0 24px rgba(0,0,0,0.1);
+      }
+      .sidebar.open { left: 0; }
+      .main { padding: 1.5rem 1.25rem 5rem; max-width: none; }
+      .menu-toggle { display: flex; align-items: center; justify-content: center; }
+      .vs-grid { grid-template-columns: 1fr; }
+      .hero { padding: 1.5rem; }
+      .hero h2 { font-size: 1.5rem; }
+    }
+
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+<button class="menu-toggle" type="button" aria-label="Abrir menu" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+<div class="layout">
+  <nav class="sidebar" aria-label="Navegação">
+    <div class="sidebar-brand">
+      <h1>CqFeature</h1>
+      <p>cq/cqfeature · PHP 8.1+</p>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Começar</div>
+      <a href="#intro">O que é</a>
+      <a href="#faz-nao-faz">O que faz / não faz</a>
+      <a href="#instalacao">Instalação</a>
+      <a href="#inicio-rapido">Início rápido</a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Configuração</div>
+      <a href="#configuracao">Publicar a config</a>
+      <a href="#caminhos">Caminhos e namespaces</a>
+      <a href="#rotas">Rotas</a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Customização</div>
+      <a href="#stubs">Stubs publicáveis</a>
+      <a href="#comando">Comando Artisan</a>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Uso</div>
+      <a href="#exemplos">Exemplos</a>
+      <a href="#estrutura-gerada">Estrutura gerada</a>
+      <a href="#faq">FAQ</a>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <header class="hero">
+      <h2>Scaffold DDD instalável para Laravel</h2>
+      <p>CqFeature gera a estrutura DDD da Cq (Module → Domain → Feature) — Shared, Features CRUD/customizadas, Migrations, Factories, Routes e Tests — a partir de um único comando Artisan. É a evolução do <code>FeatureMaker</code>, agora reutilizável e 100% configurável via <code>config/cqfeature.php</code>.</p>
+      <div class="hero-tags">
+        <span class="tag">DDD</span>
+        <span class="tag">Module / Domain / Feature</span>
+        <span class="tag">Artisan</span>
+        <span class="tag">Stubs publicáveis</span>
+        <span class="tag">Zero hardcode</span>
+      </div>
+    </header>
+
+    <!-- INTRO -->
+    <section id="intro">
+      <h2>O que é o CqFeature?</h2>
+      <p>O CqFeature é um <strong>gerador de scaffold</strong> que materializa a arquitetura DDD da Cq em código. Você informa o <strong>módulo</strong>, o <strong>domínio</strong> e as <strong>features</strong> desejadas, e o pacote cria toda a árvore de arquivos (Entidades, Models, DAOs, Repositories, Controllers, Services, Requests, DTOs, Migrations, Factories, Rotas e Tests) seguindo os padrões do projeto.</p>
+
+      <p>Diferente da antiga lib interna <code>FeatureMaker</code> (acoplada ao <code>cq/api</code> e cheia de caminhos/namespaces fixos no código), o CqFeature é um <strong>pacote Composer</strong> no padrão <code>Cq*</code>: instalável por VCS, com auto-discovery do Service Provider e <strong>toda</strong> configuração (caminhos, namespaces, rotas, nome do comando e stubs) externalizada para <code>config/cqfeature.php</code>.</p>
+
+      <div class="cards">
+        <div class="card">
+          <h4>Zero hardcode</h4>
+          <p>Caminhos, namespaces, rotas e stubs vêm da config injetada — nenhum literal no código do pacote.</p>
+        </div>
+        <div class="card">
+          <h4>Out-of-the-box</h4>
+          <p>Os defaults reproduzem o comportamento do <code>cq/api</code>: instale e use sem ajustar nada.</p>
+        </div>
+        <div class="card">
+          <h4>Stubs seus</h4>
+          <p>Publique os stubs e edite os templates por projeto — o stub publicado tem precedência.</p>
+        </div>
+        <div class="card">
+          <h4>Portável</h4>
+          <p>Funciona em projetos com estruturas/namespaces distintos apenas ajustando a config.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Regra de ouro (RN-01)</div>
+        Com a config <strong>default</strong>, a saída do CqFeature é <strong>idêntica</strong> à do FeatureMaker original do <code>cq/api</code>. Um teste de equivalência por snapshot é o guardião dessa regra.
+      </div>
+    </section>
+
+    <!-- FAZ / NÃO FAZ -->
+    <section id="faz-nao-faz">
+      <h2>O que faz e o que não faz</h2>
+
+      <div class="vs-grid">
+        <div class="vs-box yes">
+          <h4>✓ O CqFeature faz</h4>
+          <ul>
+            <li>Gerar a camada <strong>Shared</strong> do domínio (Entity, Model, Dao, Repositories)</li>
+            <li>Gerar features <strong>CRUD</strong> (create, list, find, update, delete)</li>
+            <li>Gerar features <strong>customizadas</strong> em PascalCase</li>
+            <li>Criar <strong>agregados</strong> dentro de um domínio existente</li>
+            <li>Gerar Migration, Factory e Tests de cada artefato</li>
+            <li>Registrar <strong>rotas</strong> idempotentes (append por método + URI)</li>
+            <li>Respeitar caminhos/namespaces vindos da config</li>
+            <li>Pular arquivos já existentes (nunca sobrescreve)</li>
+          </ul>
+        </div>
+        <div class="vs-box no">
+          <h4>✗ O CqFeature não faz</h4>
+          <ul>
+            <li><strong>Sobrescrever</strong> arquivos existentes (eles são <em>skipped</em>)</li>
+            <li>Mudar a arquitetura DDD ou criar novos <em>tipos</em> de feature</li>
+            <li>Rodar migrations ou tocar o banco de dados</li>
+            <li>Exigir Orchestra Testbench (testes em PHPUnit puro)</li>
+            <li>Publicar no Packagist público (distribuição por VCS privado)</li>
+            <li>Presets/perfis nomeados de config (apenas um arquivo de config)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- INSTALAÇÃO -->
+    <section id="instalacao">
+      <h2>Instalação</h2>
+      <p>O pacote é distribuído por <strong>VCS privado</strong> (<code>CqPlace/CqFeature</code>). Adicione o repositório ao <code>composer.json</code> do projeto consumidor:</p>
+<pre><code><span class="kw">{</span>
+    <span class="str">"repositories"</span>: [
+        {
+            <span class="str">"type"</span>: <span class="str">"vcs"</span>,
+            <span class="str">"url"</span>: <span class="str">"https://github.com/CqPlace/CqFeature.git"</span>
+        }
+    ]
+<span class="kw">}</span></code></pre>
+
+      <p>Em seguida, instale via Composer:</p>
+<pre><code>composer require cq/cqfeature</code></pre>
+
+      <p>O <strong>auto-discovery</strong> do Laravel registra o <code>Cq\CqFeature\Laravel\CqFeatureServiceProvider</code> automaticamente (declarado em <code>extra.laravel.providers</code>). Nada mais é necessário para começar a usar o comando.</p>
+
+      <h3>Requisitos</h3>
+      <table>
+        <thead>
+          <tr><th>Requisito</th><th>Obrigatório?</th><th>Notas</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>PHP ^8.1</td><td>Sim</td><td>Testado em 8.2 / 8.3</td></tr>
+          <tr><td>illuminate/support ^10|^11|^12</td><td>Sim</td><td>Laravel 10 / 11 / 12</td></tr>
+          <tr><td>illuminate/console ^10|^11|^12</td><td>Sim</td><td>Comando Artisan</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-warn">
+        <div class="callout-title">Habilitar o GitHub Pages</div>
+        Para que este tutorial fique acessível online, habilite o GitHub Pages do repositório em <code>Settings → Pages → Build and deployment → Source: GitHub Actions</code>. O workflow <code>.github/workflows/pages.yml</code> publica o conteúdo de <code>docs/</code> a cada push em <code>main</code>.
+      </div>
+    </section>
+
+    <!-- INÍCIO RÁPIDO -->
+    <section id="inicio-rapido">
+      <h2>Início rápido</h2>
+      <p>Gere um domínio CRUD completo com rotas em uma linha:</p>
+<pre><code>php artisan feature Financial Finance --features=crud --register-routes</code></pre>
+
+      <p>O comando exibe um <strong>resumo</strong> dos arquivos que serão criados e pede confirmação antes de gravar. Para gerar sem confirmação (CI, scripts), use <code>--force</code>:</p>
+<pre><code>php artisan feature Financial Finance --features=crud --register-routes --force</code></pre>
+
+      <p>Sem argumentos, o comando entra em <strong>modo interativo</strong> e pergunta módulo, domínio, features e registro de rotas:</p>
+<pre><code>php artisan feature</code></pre>
+
+      <div class="callout callout-success">
+        <div class="callout-title">Nunca sobrescreve</div>
+        Arquivos que já existem aparecem como <code>SKIP</code> no resumo e <strong>não são alterados</strong>. Rode o comando quantas vezes quiser com segurança.
+      </div>
+    </section>
+
+    <!-- CONFIGURAÇÃO -->
+    <section id="configuracao">
+      <h2>Publicar a configuração</h2>
+      <p>Os defaults já reproduzem o comportamento do <code>cq/api</code>. Para customizar, publique o arquivo de config:</p>
+<pre><code>php artisan vendor:publish --tag=cqfeature-config</code></pre>
+
+      <p>Isso cria <code>config/cqfeature.php</code> no projeto. As chaves abaixo controlam <strong>tudo</strong> o que era hardcoded na lib original.</p>
+
+      <table>
+        <thead>
+          <tr><th>Chave</th><th>Default</th><th>Descrição</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>root_namespace</code></td><td><code>App</code></td><td>Raiz PSR-4; vira o placeholder <code>{{RootNamespace}}</code> dos stubs</td></tr>
+          <tr><td><code>segments.modules</code></td><td><code>Modules</code></td><td>Pasta/namespace raiz dos módulos</td></tr>
+          <tr><td><code>segments.shared</code></td><td><code>Shared</code></td><td>Pasta da camada compartilhada do domínio</td></tr>
+          <tr><td><code>segments.features</code></td><td><code>Features</code></td><td>Pasta das features</td></tr>
+          <tr><td><code>segments.aggregates</code></td><td><code>Aggregates</code></td><td>Pasta dos agregados</td></tr>
+          <tr><td><code>paths.app</code></td><td><code>app</code></td><td>Raiz do código-fonte da aplicação</td></tr>
+          <tr><td><code>paths.tests_base</code></td><td><code>tests/Feature/Modules</code></td><td>Raiz dos testes gerados</td></tr>
+          <tr><td><code>paths.factories_base</code></td><td><code>database/factories/Modules</code></td><td>Raiz das factories geradas</td></tr>
+          <tr><td><code>paths.migrations_base</code></td><td><code>database/migrations</code></td><td>Raiz das migrations geradas</td></tr>
+          <tr><td><code>command.name</code></td><td><code>feature</code></td><td>Nome do comando Artisan</td></tr>
+          <tr><td><code>stubs.published_path</code></td><td><code>null</code></td><td>Diretório de stubs publicados (precedência)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- CAMINHOS -->
+    <section id="caminhos">
+      <h2>Caminhos e namespaces</h2>
+      <p>Mudar uma chave de caminho/namespace altera <strong>onde</strong> os arquivos são gerados e <strong>com qual namespace</strong>. Exemplo: gerar dentro de <code>src/</code> com namespace <code>Acme</code>:</p>
+<pre><code><span class="kw">return</span> [
+    <span class="str">'root_namespace'</span> => <span class="str">'Acme'</span>,
+    <span class="str">'segments'</span> => [
+        <span class="str">'modules'</span>    => <span class="str">'Modules'</span>,
+        <span class="str">'shared'</span>     => <span class="str">'Shared'</span>,
+        <span class="str">'features'</span>   => <span class="str">'Features'</span>,
+        <span class="str">'aggregates'</span> => <span class="str">'Aggregates'</span>,
+    ],
+    <span class="str">'paths'</span> => [
+        <span class="str">'app'</span>             => <span class="str">'src'</span>,
+        <span class="str">'tests_base'</span>      => <span class="str">'tests/Feature/Modules'</span>,
+        <span class="str">'factories_base'</span>  => <span class="str">'database/factories/Modules'</span>,
+        <span class="str">'migrations_base'</span> => <span class="str">'database/migrations'</span>,
+    ],
+];</code></pre>
+
+      <h3>Subpastas dos artefatos</h3>
+      <p>As chaves <code>shared_subfolders</code> e <code>feature_subfolders</code> mapeiam cada tipo de artefato para a subpasta correspondente. Ex.: <code>'Controller' => 'Controllers'</code>, <code>'Entity' => 'Entities'</code>. Ajuste-as se o seu projeto usa nomes de pastas diferentes.</p>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Anti path-traversal preservado</div>
+        A validação de <em>bounds</em> garante que os arquivos fiquem dentro da raiz de módulos configurada (<code>segments.modules</code>). Nomes com <code>..</code> ou fora de PascalCase/PSR-4 são rejeitados.
+      </div>
+    </section>
+
+    <!-- ROTAS -->
+    <section id="rotas">
+      <h2>Rotas</h2>
+      <p>Com <code>--register-routes</code>, o pacote cria/atualiza o arquivo de rotas do domínio de forma <strong>idempotente</strong> (não duplica linhas já existentes). Tudo é configurável via <code>routes.*</code>:</p>
+
+      <table>
+        <thead>
+          <tr><th>Chave</th><th>Default</th><th>Descrição</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>routes.base</code></td><td><code>routes/api/modules</code></td><td>Pasta-base dos arquivos de rota gerados</td></tr>
+          <tr><td><code>routes.prefix</code></td><td><code>module_kebab</code></td><td>Estratégia do prefixo do <code>Route::group</code></td></tr>
+          <tr><td><code>routes.middleware</code></td><td><code>['api','JWT','cors','localization']</code></td><td>Middleware do grupo de rotas</td></tr>
+          <tr><td><code>routes.feature_map</code></td><td>create/list/find/update/delete</td><td>Mapa feature → método HTTP + sufixo da URI</td></tr>
+        </tbody>
+      </table>
+
+      <p>O <code>feature_map</code> default reproduz o REST clássico:</p>
+      <table>
+        <thead>
+          <tr><th>Feature</th><th>Método</th><th>URI</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>create</code></td><td>POST</td><td><code>{prefix}/{slug}</code></td></tr>
+          <tr><td><code>list</code></td><td>GET</td><td><code>{prefix}/{slug}</code></td></tr>
+          <tr><td><code>find</code></td><td>GET</td><td><code>{prefix}/{slug}/{id}</code></td></tr>
+          <tr><td><code>update</code></td><td>PUT</td><td><code>{prefix}/{slug}/{id}</code></td></tr>
+          <tr><td><code>delete</code></td><td>DELETE</td><td><code>{prefix}/{slug}/{id}</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- STUBS -->
+    <section id="stubs">
+      <h2>Stubs publicáveis</h2>
+      <p>Os templates (<code>.stub</code>) ficam internos ao pacote, com o namespace base parametrizado pelo placeholder <code>{{RootNamespace}}</code>. Para customizá-los por projeto, publique:</p>
+<pre><code>php artisan vendor:publish --tag=cqfeature-stubs</code></pre>
+
+      <p>Os stubs são copiados para <code>stubs/cqfeature</code> (ou o diretório definido em <code>stubs.published_path</code>). Edite-os à vontade.</p>
+
+      <h3>Precedência (RN-02)</h3>
+      <p>O <code>StubRenderer</code> resolve o template na ordem <code>[publicado, pacote]</code>. Assim, <strong>o stub publicado no projeto vence o stub interno do pacote</strong>. Se não houver versão publicada, o do pacote é usado.</p>
+
+      <div class="callout callout-warn">
+        <div class="callout-title">Placeholders residuais</div>
+        Após a renderização, qualquer placeholder não resolvido (<code>{{...}}</code>) é rejeitado com erro. Mantenha os placeholders dos stubs consistentes com os que o renderer fornece (<code>{{RootNamespace}}</code>, <code>{{Module}}</code>, <code>{{Domain}}</code> etc.).
+      </div>
+    </section>
+
+    <!-- COMANDO -->
+    <section id="comando">
+      <h2>Comando Artisan</h2>
+      <p>O comando default é <code>feature</code> (configurável via <code>command.name</code>). A assinatura é montada em <strong>runtime</strong> a partir da config — trocar o nome na config altera o comando registrado.</p>
+
+      <h3>Argumentos</h3>
+      <table>
+        <thead>
+          <tr><th>Argumento</th><th>Obrigatório?</th><th>Descrição</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>module</code></td><td>Sim*</td><td>Pasta base do módulo (ex.: <code>Financial</code>)</td></tr>
+          <tr><td><code>domain</code></td><td>Sim*</td><td>Nome do domínio (ex.: <code>Finance</code>)</td></tr>
+        </tbody>
+      </table>
+      <p><small>* Se omitidos, são perguntados no modo interativo.</small></p>
+
+      <h3>Opções</h3>
+      <table>
+        <thead>
+          <tr><th>Opção</th><th>Descrição</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>--features=</code></td><td>Lista de features: <code>create,list,find,update,delete</code>, <code>crud</code> ou customizadas em PascalCase</td></tr>
+          <tr><td><code>--force</code></td><td>Cria os arquivos sem pedir confirmação</td></tr>
+          <tr><td><code>--register-routes</code></td><td>Registra as rotas dos controllers gerados</td></tr>
+          <tr><td><code>--aggregate-of=</code></td><td>Cria como agregado dentro de um domínio existente (ex.: <code>Finance</code>)</td></tr>
+        </tbody>
+      </table>
+
+      <div class="method">
+        <div class="method-sig">php artisan feature {module?} {domain?} {--features=} {--force} {--register-routes} {--aggregate-of=}</div>
+        <p class="method-desc">Assinatura completa. O nome <code>feature</code> é substituído por <code>config('cqfeature.command.name')</code> em runtime.</p>
+      </div>
+    </section>
+
+    <!-- EXEMPLOS -->
+    <section id="exemplos">
+      <h2>Exemplos</h2>
+
+      <h3>Domínio novo (CRUD + rotas)</h3>
+      <p>Cria a camada Shared e as cinco features CRUD, além de registrar as rotas:</p>
+<pre><code>php artisan feature Financial Finance --features=crud --register-routes</code></pre>
+
+      <h3>Features padrão selecionadas</h3>
+      <p>Gera apenas <code>list</code> e <code>find</code> (sem Shared duplicado se o domínio já existir):</p>
+<pre><code>php artisan feature Financial Finance --features=list,find</code></pre>
+
+      <h3>Feature customizada</h3>
+      <p>O prefixo do domínio é adicionado automaticamente — informe o nome <strong>sem</strong> o prefixo. Abaixo cria a feature <code>FinanceChangeInstallmentStatus</code>:</p>
+<pre><code>php artisan feature Financial Finance --features=ChangeInstallmentStatus</code></pre>
+
+      <h3>Agregado de um domínio existente</h3>
+      <p>Cria o domínio <code>Invoice</code> como agregado dentro de <code>Finance</code> (em <code>Aggregates/</code>):</p>
+<pre><code>php artisan feature Financial Invoice --aggregate-of=Finance --features=crud</code></pre>
+
+      <div class="callout callout-info">
+        <div class="callout-title">Misturando features</div>
+        Você pode combinar padrão e customizada: <code>--features=crud,ChangeInstallmentStatus</code> gera o CRUD completo mais a feature customizada.
+      </div>
+    </section>
+
+    <!-- ESTRUTURA GERADA -->
+    <section id="estrutura-gerada">
+      <h2>Estrutura gerada</h2>
+      <p>Para <code>feature Financial Finance --features=crud --register-routes</code> com a config default, a árvore criada (resumida) é:</p>
+<div class="tree">app/Modules/Financial/Finance/
+├── Shared/
+│   ├── Entities/        FinanceEntity.php
+│   ├── Models/          FinanceModel.php
+│   ├── Dao/             Commands/ · Queries/
+│   └── Repositories/    Commands/ · Queries/
+└── Features/
+    ├── FinanceCreate/   Controllers/ · Services/ · Requests/ · Dtos/ · Repositories/
+    ├── FinanceList/     Controllers/ · Services/ · FilterDtos/ · Dao/ · Dtos/
+    ├── FinanceFind/     Controllers/ · Services/ · Repositories/ · Dao/ · Dtos/
+    ├── FinanceUpdate/   Controllers/ · Services/ · Requests/ · Repositories/ · Dtos/
+    └── FinanceDelete/   Controllers/ · Services/ · Repositories/
+
+database/migrations/    ..._create_finances_table.php
+database/factories/Modules/Financial/Finance/Shared/Models/FinanceFactory.php
+tests/Feature/Modules/Financial/Finance/...
+routes/api/modules/financial/finances.php</div>
+
+      <p>Os caminhos exatos dependem das chaves <code>paths.*</code>, <code>segments.*</code> e <code>routes.base</code> da sua config.</p>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+      <h2>Perguntas frequentes</h2>
+
+      <h3>A saída é igual à do FeatureMaker antigo?</h3>
+      <p>Sim. Com a config default, a saída é <strong>idêntica</strong> (RN-01). O pacote inclui um teste de equivalência por snapshot que falha se houver qualquer divergência.</p>
+
+      <h3>Como mudo o namespace base do código gerado?</h3>
+      <p>Publique a config (<code>--tag=cqfeature-config</code>) e ajuste <code>root_namespace</code>. Os stubs usam o placeholder <code>{{RootNamespace}}</code>, então todo o código gerado passa a usar o novo namespace.</p>
+
+      <h3>Como troco o nome do comando?</h3>
+      <p>Altere <code>command.name</code> na config. Ex.: definir <code>'scaffold'</code> faz o comando ser invocado como <code>php artisan scaffold ...</code>. A assinatura é montada em runtime a partir dessa chave.</p>
+
+      <h3>Os meus stubs publicados são realmente usados?</h3>
+      <p>Sim — eles têm <strong>precedência</strong> sobre os do pacote (RN-02). Se o template existir no diretório publicado, ele é usado; caso contrário, cai no stub interno do pacote.</p>
+
+      <h3>O comando sobrescreve arquivos existentes?</h3>
+      <p>Não. Arquivos existentes são marcados como <code>SKIP</code> e mantidos intactos. É seguro rodar o comando repetidamente.</p>
+
+      <h3>Preciso do Laravel completo para testar?</h3>
+      <p>Não. A suíte usa <strong>PHPUnit puro</strong> (sem Orchestra Testbench), filesystem temporário e <code>Illuminate\Container\Container</code> para exercitar o provider.</p>
+
+      <h3>Como rodo os testes do pacote?</h3>
+<pre><code>composer test</code></pre>
+      <p>Duas suítes: <code>Unit</code> (<code>tests/Unit</code>) e <code>Features</code> (<code>tests/Features</code> — E2E + equivalência por snapshot).</p>
+
+      <h3>Onde está o código-fonte?</h3>
+      <p>
+        <code>src/Config/CqFeatureConfig.php</code> — Value Object imutável da config<br>
+        <code>src/Services/*</code> — PathResolver, StubRenderer, RouteRegistry, ScaffoldService<br>
+        <code>src/Console/FeatureCommand.php</code> — comando Artisan<br>
+        <code>src/Laravel/CqFeatureServiceProvider.php</code> — provider (merge + publishes)<br>
+        <code>config/cqfeature.php</code> — config publicável · <code>stubs/</code> — templates publicáveis
+      </p>
+    </section>
+
+    <footer>
+      <p>CqFeature · <code>cq/cqfeature</code> · Documentação gerada para o repositório Cq. Abra este arquivo no navegador: <code>docs/index.html</code></p>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  // Highlight active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.sidebar a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+
+  // Close mobile menu on link click
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      document.querySelector('.sidebar').classList.remove('open');
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}};
+
+use Illuminate\Http\Response;
+use Tests\Feature\Modules\{{Module}}\{{Domain}}\Shared\{{Domain}}TestCase;
+
+final class {{Domain}}{{Action}}Test extends {{Domain}}TestCase
+{
+    /**
+     * Criar registro
+     *
+     * @test
+     *
+     * @group feature
+     */
+    public function test_create_{{domain_snake}}(): void
+    {
+        $body = $this->make{{Domain}}();
+
+        $endpoint = "{$this->baseUrl}";
+        $response = $this->json(self::POST, $endpoint, $body);
+
+        $expected = $this->defaultExpected($this->foundExpected());
+        $response
+            ->assertStatus(Response::HTTP_CREATED)
+            ->assertJsonStructure($expected);
+        $this->assertNotEmpty($response->json()['data']);
+        $this->assertDatabaseHas('{{table_name}}', ['id' => $response->json()['data']['id']]);
+    }
+}

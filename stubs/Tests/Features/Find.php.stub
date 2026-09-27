@@ -1,0 +1,33 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}};
+
+use Illuminate\Http\Response;
+use Tests\Feature\Modules\{{Module}}\{{Domain}}\Shared\{{Domain}}TestCase;
+
+final class {{Domain}}{{Action}}Test extends {{Domain}}TestCase
+{
+    /**
+     * Localizar registro por id
+     *
+     * @test
+     *
+     * @group feature
+     */
+    public function test_find_{{domain_snake}}(): void
+    {
+        $created = $this->make{{Domain}}(true);
+
+        $endpoint = "{$this->baseUrl}/{$created['id']}";
+        $response = $this->json(self::GET, $endpoint);
+
+        $expected = $this->defaultExpected($this->foundExpected());
+        $response
+            ->assertStatus(Response::HTTP_OK)
+            ->assertJsonStructure($expected);
+        $this->assertNotEmpty($response->json()['data']);
+        $this->assertSame($created['id'], $response->json()['data']['id']);
+    }
+}

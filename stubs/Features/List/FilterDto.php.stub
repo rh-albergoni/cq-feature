@@ -1,0 +1,13 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\FilterDtos;
+
+use {{RootNamespace}}\Helpers\FromArrayTrait;
+use {{RootNamespace}}\Shared\FilterDtos\BaseListFilterDto;
+
+final class {{Domain}}{{Action}}FilterDto extends BaseListFilterDto
+{
+    use FromArrayTrait;
+}

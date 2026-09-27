@@ -1,0 +1,26 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Services;
+
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Dtos\{{Domain}}{{Action}}Dto;
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Repositories\Commands\{{Domain}}{{Action}}CommandRepository;
+use {{RootNamespace}}\Shared\Services\BaseService;
+
+final class {{Domain}}{{Action}}Service extends BaseService
+{
+    public function __construct(
+        private readonly {{Domain}}{{Action}}CommandRepository $commandRepository,
+    ) {
+        parent::__construct();
+    }
+
+    public function execute({{Domain}}{{Action}}Dto $data): mixed
+    {
+        return $this->handleTransaction(function () use ($data) {
+            // TODO: implementar lógica de negócio
+            return $this->commandRepository->execute($data);
+        });
+    }
+}

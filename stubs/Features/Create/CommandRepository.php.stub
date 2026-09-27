@@ -1,0 +1,36 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Repositories\Commands;
+
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Repositories\Commands\{{Domain}}CommandRepository;
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Entities\{{Domain}}Entity;
+use {{RootNamespace}}\Shared\Entities\BaseEntity;
+
+class {{Domain}}{{Action}}CommandRepository extends {{Domain}}CommandRepository
+{
+    /**
+     * Criar registro
+     *
+     * @param  {{Domain}}Entity  $data
+     */
+    public function execute(BaseEntity|{{Domain}}Entity $data): int
+    {
+        $this->ensureCallerIsAuthorized();
+
+        $model = $this->create($data);
+
+        return $model->id;
+    }
+
+    /**
+     * @return array<class-string>
+     */
+    protected function authorizedCallers(): array
+    {
+        return [
+            '{{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Services\{{Domain}}{{Action}}Service',
+        ];
+    }
+}

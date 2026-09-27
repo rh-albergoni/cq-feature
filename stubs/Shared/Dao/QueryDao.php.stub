@@ -1,0 +1,34 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Dao\Queries;
+
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}Find\Dtos\{{Domain}}ViewDto;
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}List\Dtos\{{Domain}}ListDto;
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Models\{{Domain}};
+use {{RootNamespace}}\Shared\Cqs\Dao\Queries\BaseQueryDao;
+
+class {{Domain}}QueryDao extends BaseQueryDao
+{
+    public function __construct()
+    {
+        $this->model = new {{Domain}};
+    }
+
+    /**
+     * Mapear item para ViewDto
+     */
+    protected function modelToViewDto(array|\stdClass|{{Domain}} $item): {{Domain}}ViewDto
+    {
+        return {{Domain}}ViewDto::from($item);
+    }
+
+    /**
+     * Mapear item para ListDto
+     */
+    protected function modelToListDto(array|\stdClass|{{Domain}} $item): {{Domain}}ListDto
+    {
+        return {{Domain}}ListDto::from($item);
+    }
+}

@@ -1,0 +1,29 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}};
+
+use Illuminate\Http\Response;
+use Tests\Feature\Modules\{{Module}}\{{Domain}}\Shared\{{Domain}}TestCase;
+
+final class {{Domain}}{{Action}}Test extends {{Domain}}TestCase
+{
+    /**
+     * Deletar registro
+     *
+     * @test
+     *
+     * @group feature
+     */
+    public function test_delete_{{domain_snake}}(): void
+    {
+        $created = $this->make{{Domain}}(true);
+
+        $endpoint = "{$this->baseUrl}/{$created['id']}";
+        $response = $this->json(self::DELETE, $endpoint);
+
+        $response->assertStatus(Response::HTTP_OK);
+        $this->assertDatabaseMissing('{{table_name}}', ['id' => $created['id']]);
+    }
+}

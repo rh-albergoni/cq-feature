@@ -1,0 +1,30 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Repositories\Commands;
+
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Repositories\Commands\{{Domain}}CommandRepository;
+
+class {{Domain}}{{Action}}CommandRepository extends {{Domain}}CommandRepository
+{
+    /**
+     * Deletar item(ns)
+     */
+    public function execute(int|array $ids): bool
+    {
+        $this->ensureCallerIsAuthorized();
+
+        return $this->delete($ids);
+    }
+
+    /**
+     * @return array<class-string>
+     */
+    protected function authorizedCallers(): array
+    {
+        return [
+            '{{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Services\{{Domain}}{{Action}}Service',
+        ];
+    }
+}

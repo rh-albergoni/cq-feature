@@ -1,0 +1,72 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Modules\{{Module}}\{{Domain}}\Shared;
+
+use {{RootNamespace}}\Models\User;
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Models\{{Domain}};
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+abstract class {{Domain}}TestCase extends TestCase
+{
+    use RefreshDatabase;
+
+    protected string $baseUrl;
+
+    protected User $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->user = User::factory()->create();
+        $this->actingAs($this->user);
+        $this->baseUrl = '/api/v1/{{module_kebab}}/{{domain_plural_kebab}}';
+    }
+
+    /**
+     * Estrutura esperada para registro localizado (Create / Update / Find)
+     *
+     * @return array
+     */
+    protected function foundExpected(): array
+    {
+        return [
+            'id',
+            'created_by_user_id',
+            'updated_by_user_id',
+            'created_at',
+            'updated_at',
+        ];
+    }
+
+    /**
+     * Estrutura esperada para item da listagem
+     *
+     * @return array
+     */
+    protected function listItemExpected(): array
+    {
+        return [
+            'id',
+            'created_by_user_id',
+            'updated_by_user_id',
+            'created_at',
+            'updated_at',
+        ];
+    }
+
+    /**
+     * Monta o conjunto {{Domain}}
+     *
+     * @param  bool  $create  false (padrão) → retorna body para POST/PUT (factory->make);
+     *                        true           → persiste no banco de dados (factory->create).
+     */
+    protected function make{{Domain}}(bool $create = false): array
+    {
+        $method = $create ? 'create' : 'make';
+
+        return {{Domain}}::factory()->{$method}()->toArray();
+    }
+}

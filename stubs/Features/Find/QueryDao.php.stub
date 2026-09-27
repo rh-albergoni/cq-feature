@@ -1,0 +1,42 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Dao\Queries;
+
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Dtos\{{Domain}}ViewDto;
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Dao\Queries\{{Domain}}QueryDao;
+
+class {{Domain}}{{Action}}QueryDao extends {{Domain}}QueryDao
+{
+    /**
+     * Localizar registro por ID
+     */
+    public function execute(int $id): ?{{Domain}}ViewDto
+    {
+        $this->ensureCallerIsAuthorized();
+
+        ${{domain_camel}} = $this->q()
+            ->select([
+                '{{table_name}}.*',
+            ])
+            ->where('{{table_name}}.id', $id)
+            ->first();
+
+        if (! ${{domain_camel}}) {
+            return null;
+        }
+
+        return $this->modelToViewDto(${{domain_camel}});
+    }
+
+    /**
+     * @return array<class-string>
+     */
+    protected function authorizedCallers(): array
+    {
+        return [
+            '{{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Services\{{Domain}}{{Action}}Service',
+        ];
+    }
+}

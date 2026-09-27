@@ -1,0 +1,33 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Repositories\Queries;
+
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Entities\{{Domain}}Entity;
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Repositories\Queries\{{Domain}}QueryRepository;
+
+class {{Domain}}{{Action}}QueryRepository extends {{Domain}}QueryRepository
+{
+    /**
+     * Executar consulta
+     */
+    public function execute(mixed ...$args): mixed
+    {
+        $this->ensureCallerIsAuthorized();
+
+        // TODO: implementar lógica de consulta
+
+        return null;
+    }
+
+    /**
+     * @return array<class-string>
+     */
+    protected function authorizedCallers(): array
+    {
+        return [
+            '{{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Services\{{Domain}}{{Action}}Service',
+        ];
+    }
+}

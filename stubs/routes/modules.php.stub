@@ -1,0 +1,13 @@
+<?php
+
+{{useStatements}}
+use Illuminate\Support\Facades\Route;
+
+// {{moduleKebab}}/{{domainPluralKebab}}
+
+Route::group([
+    'middleware' => ['api', 'JWT', 'cors', 'localization'],
+    'prefix' => '{{moduleKebab}}',
+], function () {
+{{routeLines}}
+});

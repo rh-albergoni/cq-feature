@@ -1,0 +1,16 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Repositories\Commands;
+
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Models\{{Domain}};
+use {{RootNamespace}}\Shared\Cqs\Repositories\Commands\BaseCommandRepository;
+
+class {{Domain}}CommandRepository extends BaseCommandRepository
+{
+    public function __construct()
+    {
+        $this->model = new {{Domain}};
+    }
+}

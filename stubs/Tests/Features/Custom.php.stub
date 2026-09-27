@@ -1,0 +1,29 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}};
+
+use Illuminate\Http\Response;
+use Tests\Feature\Modules\{{Module}}\{{Domain}}\Shared\{{Domain}}TestCase;
+
+final class {{Domain}}{{Action}}Test extends {{Domain}}TestCase
+{
+    /**
+     * Smoke test para feature customizada {{Domain}}{{Action}}
+     * Ajuste o endpoint, body e asserts conforme a rota e contrato da feature.
+     *
+     * @test
+     *
+     * @group feature
+     */
+    public function test_execute_{{domain_snake}}_{{action_snake}}(): void
+    {
+        $body = [];
+
+        $endpoint = "{$this->baseUrl}/{{action_kebab}}";
+        $response = $this->json(self::POST, $endpoint, $body);
+
+        $response->assertStatus(Response::HTTP_OK);
+    }
+}

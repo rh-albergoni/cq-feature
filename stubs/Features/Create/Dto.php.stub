@@ -1,0 +1,13 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Dtos;
+
+use {{RootNamespace}}\Helpers\FromArrayTrait;
+use {{RootNamespace}}\Shared\Dtos\BaseDto;
+
+class {{Domain}}{{Action}}Dto extends BaseDto
+{
+    use FromArrayTrait;
+}

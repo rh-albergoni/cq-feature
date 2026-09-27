@@ -1,0 +1,32 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Services;
+
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Dtos\{{Domain}}{{Action}}Dto;
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Repositories\Commands\{{Domain}}{{Action}}CommandRepository;
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}Find\Dtos\{{Domain}}ViewDto;
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}Find\Services\{{Domain}}FindService;
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Entities\{{Domain}}Entity;
+use {{RootNamespace}}\Shared\Services\BaseService;
+
+final class {{Domain}}{{Action}}Service extends BaseService
+{
+    public function __construct(
+        private readonly {{Domain}}{{Action}}CommandRepository $commandRepository,
+        private readonly {{Domain}}FindService ${{domain_camel}}FindService,
+    ) {
+        parent::__construct();
+    }
+
+    public function execute({{Domain}}{{Action}}Dto $data): {{Domain}}ViewDto
+    {
+        return $this->handleTransaction(function () use ($data) {
+            $entity = {{Domain}}Entity::from($data);
+            $createdId = $this->commandRepository->execute($entity);
+
+            return $this->{{domain_camel}}FindService->execute($createdId);
+        });
+    }
+}

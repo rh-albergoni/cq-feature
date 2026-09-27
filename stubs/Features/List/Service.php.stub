@@ -1,0 +1,24 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Services;
+
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Dao\Queries\{{Domain}}{{Action}}QueryDao;
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\FilterDtos\{{Domain}}{{Action}}FilterDto;
+use {{RootNamespace}}\Shared\Dtos\PagerDto;
+use {{RootNamespace}}\Shared\Services\BaseService;
+
+final class {{Domain}}{{Action}}Service extends BaseService
+{
+    public function __construct(
+        private readonly {{Domain}}{{Action}}QueryDao $queryDao,
+    ) {
+        parent::__construct();
+    }
+
+    public function execute({{Domain}}{{Action}}FilterDto $filter): PagerDto
+    {
+        return $this->queryDao->execute($filter);
+    }
+}

@@ -1,0 +1,29 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Services;
+
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Dao\Queries\{{Domain}}{{Action}}QueryDao;
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Dtos\{{Domain}}ViewDto;
+use {{RootNamespace}}\Shared\Exceptions\DefaultException;
+use {{RootNamespace}}\Shared\Services\BaseService;
+
+final class {{Domain}}{{Action}}Service extends BaseService
+{
+    public function __construct(
+        private readonly {{Domain}}{{Action}}QueryDao $queryDao,
+    ) {
+        parent::__construct();
+    }
+
+    public function execute(int $id): {{Domain}}ViewDto
+    {
+        $viewDto = $this->queryDao->execute($id);
+        if (! $viewDto) {
+            throw new DefaultException;
+        }
+
+        return $viewDto;
+    }
+}

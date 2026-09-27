@@ -1,0 +1,26 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Services;
+
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Repositories\Commands\{{Domain}}{{Action}}CommandRepository;
+use {{RootNamespace}}\Shared\Exceptions\DefaultException;
+use {{RootNamespace}}\Shared\Services\BaseService;
+
+final class {{Domain}}{{Action}}Service extends BaseService
+{
+    public function __construct(
+        private readonly {{Domain}}{{Action}}CommandRepository $commandRepository,
+    ) {
+        parent::__construct();
+    }
+
+    public function execute(int $id): void
+    {
+        $deleted = $this->commandRepository->execute($id);
+        if (! $deleted) {
+            throw new DefaultException;
+        }
+    }
+}

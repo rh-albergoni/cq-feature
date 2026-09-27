@@ -1,0 +1,39 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Repositories\Queries;
+
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Entities\{{Domain}}Entity;
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Repositories\Queries\{{Domain}}QueryRepository;
+
+class {{Domain}}{{Action}}QueryRepository extends {{Domain}}QueryRepository
+{
+    /**
+     * Localizar registro por ID
+     */
+    public function execute(int $id): ?{{Domain}}Entity
+    {
+        $this->ensureCallerIsAuthorized();
+
+        $model = $this->baseQuery()
+            ->where('id', $id)
+            ->first();
+
+        if (! $model) {
+            return null;
+        }
+
+        return $this->modelToEntity($model);
+    }
+
+    /**
+     * @return array<class-string>
+     */
+    protected function authorizedCallers(): array
+    {
+        return [
+            '{{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Services\{{Domain}}{{Action}}Service',
+        ];
+    }
+}

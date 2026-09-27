@@ -1,0 +1,20 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Models;
+
+use {{RootNamespace}}\Models\ModelBase;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+final class {{Domain}} extends ModelBase
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'created_by_user_id',
+        'updated_by_user_id',
+    ];
+
+    protected $casts = [];
+}

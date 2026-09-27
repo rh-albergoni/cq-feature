@@ -1,0 +1,16 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Dao\Commands;
+
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Models\{{Domain}};
+use {{RootNamespace}}\Shared\Cqs\Dao\Commands\BaseCommandDao;
+
+class {{Domain}}CommandDao extends BaseCommandDao
+{
+    public function __construct()
+    {
+        $this->model = new {{Domain}};
+    }
+}

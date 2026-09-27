@@ -1,0 +1,32 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Dao\Commands;
+
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Dao\Commands\{{Domain}}CommandDao;
+
+class {{Domain}}{{Action}}CommandDao extends {{Domain}}CommandDao
+{
+    /**
+     * Executar comando
+     */
+    public function execute(mixed ...$args): mixed
+    {
+        $this->ensureCallerIsAuthorized();
+
+        // TODO: implementar lógica de comando
+
+        return null;
+    }
+
+    /**
+     * @return array<class-string>
+     */
+    protected function authorizedCallers(): array
+    {
+        return [
+            '{{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Services\{{Domain}}{{Action}}Service',
+        ];
+    }
+}

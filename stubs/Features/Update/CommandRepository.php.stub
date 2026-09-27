@@ -1,0 +1,37 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Repositories\Commands;
+
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Repositories\Commands\{{Domain}}CommandRepository;
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Entities\{{Domain}}Entity;
+use {{RootNamespace}}\Shared\Entities\BaseEntity;
+
+class {{Domain}}{{Action}}CommandRepository extends {{Domain}}CommandRepository
+{
+    /**
+     * Atualizar registro
+     *
+     * @param  {{Domain}}Entity  $data
+     * @param  int  $id
+     */
+    public function execute(BaseEntity|{{Domain}}Entity $data, int $id): bool
+    {
+        $this->ensureCallerIsAuthorized();
+
+        $this->update($data, $id);
+
+        return true;
+    }
+
+    /**
+     * @return array<class-string>
+     */
+    protected function authorizedCallers(): array
+    {
+        return [
+            '{{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Services\{{Domain}}{{Action}}Service',
+        ];
+    }
+}

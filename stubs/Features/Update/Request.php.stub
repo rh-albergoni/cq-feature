@@ -1,0 +1,18 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Requests;
+
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}Create\Requests\{{Domain}}CreateRequest;
+use {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}}\Dtos\{{Domain}}{{Action}}Dto;
+
+class {{Domain}}{{Action}}Request extends {{Domain}}CreateRequest
+{
+    public function validatedDto(): {{Domain}}{{Action}}Dto
+    {
+        $validated = parent::validated();
+
+        return {{Domain}}{{Action}}Dto::from($validated);
+    }
+}

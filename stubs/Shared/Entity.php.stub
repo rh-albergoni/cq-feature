@@ -1,0 +1,22 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{RootNamespace}}\Modules\{{Module}}\{{Domain}}\Shared\Entities;
+
+use {{RootNamespace}}\Shared\Entities\BaseEntity;
+use {{RootNamespace}}\Shared\Entities\IsDateString;
+use {{RootNamespace}}\Shared\Entities\IsDateStringFormat;
+
+final class {{Domain}}Entity extends BaseEntity
+{
+    public function __construct(
+        public ?int $id,
+        public ?int $created_by_user_id,
+        public ?int $updated_by_user_id,
+        #[IsDateString(IsDateStringFormat::ISO8601)]
+        public ?string $created_at,
+        #[IsDateString(IsDateStringFormat::ISO8601)]
+        public ?string $updated_at,
+    ) {}
+}

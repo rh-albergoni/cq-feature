@@ -1,0 +1,1 @@
+../../.cursor/commands/create-prd.md

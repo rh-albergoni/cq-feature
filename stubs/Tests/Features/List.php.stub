@@ -1,0 +1,32 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Modules\{{Module}}\{{Domain}}\Features\{{Domain}}{{Action}};
+
+use Illuminate\Http\Response;
+use Tests\Feature\Modules\{{Module}}\{{Domain}}\Shared\{{Domain}}TestCase;
+
+final class {{Domain}}{{Action}}Test extends {{Domain}}TestCase
+{
+    /**
+     * Listar registros
+     *
+     * @test
+     *
+     * @group feature
+     */
+    public function test_list_{{domain_snake_plural}}(): void
+    {
+        $this->make{{Domain}}(true);
+
+        $endpoint = "{$this->baseUrl}?paginate_type=1";
+        $response = $this->json(self::GET, $endpoint);
+
+        $expected = $this->defaultListExpected($this->listItemExpected());
+        $response
+            ->assertStatus(Response::HTTP_OK)
+            ->assertJsonStructure($expected);
+        $this->assertNotEmpty($response->json()['data']['items']);
+    }
+}
